@@ -9,13 +9,13 @@ import constants.Constants;
 public class DBConnection{
 
 	private static DBConnection instance;
-	private Connection con;
+	private static Connection con;
 	
 	private DBConnection()
 	{
 		if(con == null)
 			try {
-				this.con = DriverManager.getConnection(Constants.DBUrl, Constants.DBUser, Constants.DBPass);
+				con = DriverManager.getConnection(Constants.getDBUrl(), Constants.getDBUser(), Constants.getDBPass());
 				System.out.println("SQL Connection established!");
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -25,7 +25,7 @@ public class DBConnection{
 	public static synchronized DBConnection getInstance()
 	{
 		try {
-			if(instance == null || instance.getConnection().isClosed())
+			if(instance == null || con.isClosed())
 				instance = new DBConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -33,8 +33,8 @@ public class DBConnection{
 		return instance;
 	}
 	
-	public Connection getConnection()
+	public static Connection getConnection()
 	{
-		return this.con;
+		return con;
 	}
 }
